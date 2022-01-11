@@ -1,4 +1,4 @@
-name: Bump main Tag version & create release
+name: Create Tag & Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
 
     # Standard Check of the current git repository
