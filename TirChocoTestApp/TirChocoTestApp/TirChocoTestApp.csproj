@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+    <AssemblyTitle>TIR Test Console App</AssemblyTitle>
+    <Description>This is a test to investigate GitHub actions and Chocolatey publication.</Description>
+    <AssemblyName>TirChocoTestApp</AssemblyName>
+    <Authors>Martin Tirion</Authors>
+    <PackageId>TirChocoTest.Package.Test</PackageId>
+    <PackageTags>testing</PackageTags>
+    <PackageProjectUrl>https://github.com/mtirion/TirChocoTest</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mtirion/TirChocoTest</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
