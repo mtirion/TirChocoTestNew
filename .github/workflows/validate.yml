@@ -4,7 +4,11 @@ on:
   push:
     branches: [ develop ]
   pull_request:
+<<<<<<< HEAD
+    branches: [ main ]
+=======
     branches: [ main, develop ]
+>>>>>>> ffe26d86f2d647517a6760602d1062d83c322bec
 
 jobs:
   build:
