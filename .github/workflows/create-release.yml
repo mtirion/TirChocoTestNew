@@ -1,0 +1,50 @@
+name: Releases
+
+on: 
+  workflow_dispatch:
+  push:
+    tags:
+    - '*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+
+    - name: Display GitVersion outputs
+      run: |
+        echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
+
+    - name: Create single exe
+      run: |
+        dotnet publish TirChocoTestApp -c Release -r win-x64 /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output/win
+        dotnet publish TirChocoTestApp -c Release -r win-x64 /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained true /p:PublishTrimmed=true -o output/linux
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "output/**"
+        bodyFile: "CHANGELOG.md"
+        tag: ${{ steps.gitversion.outputs.semVer }}
+        token: ${{ secrets.GITHUB_TOKEN }}
