@@ -50,9 +50,9 @@ jobs:
     - name: Create single exe
       run: |
         dotnet publish TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output
-        mv output/win-x64/TirChocoTestApp.exe output/win-x64/TirChocoTestApp-win-x64.exe
+        mv output/TirChocoTestApp.exe output/TirChocoTestApp-win-x64.exe
         dotnet publish TirChocoTestApp -c Release -r linux-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained true -o output
-        mv output/linux-x64/TirChocoTestApp.exe output/linux-x64/TirChocoTestApp-linux-x64.exe
+        mv output/TirChocoTestApp.exe output/TirChocoTestApp-linux-x64.exe
 
     - name: Create release
       uses: ncipollo/release-action@v1
