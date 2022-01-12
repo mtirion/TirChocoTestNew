@@ -34,16 +34,17 @@ jobs:
     - name: Display GitVersion outputs
       run: |
         echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
     # Bump the version as tag
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.17.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # We want to tag in our repo the same version we publish to NuGet
-        CUSTOM_TAG: ${{ steps.gitversion.outputs.semVer }}
-        RELEASE_BRANCHES: main
+    #- name: Bump version and push tag
+    #  uses: anothrNick/github-tag-action@1.17.2
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    # We want to tag in our repo the same version we publish to NuGet
+    #    CUSTOM_TAG: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+    #    RELEASE_BRANCHES: main
 
     # Create the executable
     - name: Create single exe
