@@ -34,28 +34,32 @@ jobs:
     - name: Display GitVersion outputs
       run: |
         echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
     # Bump the version as tag
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.17.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # We want to tag in our repo the same version we publish to NuGet
-        CUSTOM_TAG: ${{ steps.gitversion.outputs.semVer }}
-        RELEASE_BRANCHES: main
+    #- name: Bump version and push tag
+    #  uses: anothrNick/github-tag-action@1.17.2
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    # We want to tag in our repo the same version we publish to NuGet
+    #    CUSTOM_TAG: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+    #    RELEASE_BRANCHES: main
 
     # Create the executable
     - name: Create single exe
       run: |
-        dotnet publish TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.semVer }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output
+        dotnet publish TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output
+        mv output/TirChocoTestApp.exe output/TirChocoTestApp-win-x64.exe
+        dotnet publish TirChocoTestApp -c Release -r linux-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained true -o output
+        mv output/TirChocoTestApp output/TirChocoTestApp-linux-x64
 
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
         artifacts: "output/**"
         bodyFile: "CHANGELOG.md"
-        tag: ${{ steps.gitversion.outputs.semVer }}
+        tag: ${{ steps.gitversion.outputs.MajorMinorPatch }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
    # Test Chocolatey
