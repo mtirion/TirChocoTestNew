@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;win-x64</Configurations>
-    <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyName>$(MSBuildProjectName)-win-x64</AssemblyName>
+    <AssemblyName>TirChocoTest2</AssemblyName>
   </PropertyGroup>
-
 </Project>

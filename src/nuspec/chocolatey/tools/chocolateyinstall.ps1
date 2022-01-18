@@ -1,10 +1,10 @@
 ﻿$ErrorActionPreference = 'Stop';
 
 $packageName= 'TirChocoTestNew'
-$version    = 'v0.4.0.0'
+$version    = '0.6.0'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = "https://github.com/mtirion/tirchoctestnew/releases/download/$version/tools-win-x64.zip"
-$hash       = '12345678901234567890'
+$url        = "https://github.com/mtirion/TirChocoTestNew/releases/download/$version/tools-win-x64.zip"
+$hash       = 'fc3bb6ae9fb981ddc88e106c08f0aecfecf131a519e41b51c4a90db093f568a9'
 
 $packageArgs = @{
   packageName   = $packageName

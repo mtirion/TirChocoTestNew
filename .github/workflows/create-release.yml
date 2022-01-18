@@ -1,15 +1,19 @@
-name: Create Tag & Release
+name: CD pipeline
 
+# only trigger deployment when PR om main was closed and merged
 on:
   pull_request:
     branches: [ main ]
+    types: [ closed ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # important! this filters only merged PR's, not close without merge
+    if: github.event.pull_request.merged == true
+    runs-on: windows-latest
     steps:
 
-    # Standard Check of the current git repository
+    # Checkout sources. Depth=0 is for using GitVersion
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
@@ -20,7 +24,7 @@ jobs:
       with:
         dotnet-version: 6.x
 
-    # Install and Setup GitVersion version of 5.3.x
+    # Install and Setup GitVersion
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.7
       with:
@@ -42,42 +46,14 @@ jobs:
     # 2. Build win files and copy in the LICENSE
     # 3. Build linux files and copy in the LICENSE
     - name: Create executables (win & linux)
-      run: |
-        rm -fr output
-
-        dotnet publish src/TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output/win
-        cp LICENSE output/win
-
-        dotnet publish src/TirChocoTestApp -c Release -r linux-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained true -o output/linux
-        cp LICENSE output/win
-
-    # Compress windows executables in release zip
-    - name: Create Windows x64 Archive
-      uses: thedoctor0/zip-release@master
-      with:
-        type: 'zip'
-        directory: 'output/win'
-        filename: '../tools-win-x64.zip'
-
-    # Compress windows executables in release zip
-    - name: Create Linux x64 Archive
-      uses: thedoctor0/zip-release@master
-      with:
-        type: 'zip'
-        directory: 'output/linux'
-        filename: '../tools-linux-x64.zip'
+      shell: pwsh
+      run: .\tools\deploy.ps1
 
     # Create GitHub release with created zip-files and CHANGELOG
-    - name: Create release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "output/*.zip"
-        bodyFile: "RELEASENOTE.md"
-        tag: ${{ steps.gitversion.outputs.MajorMinorPatch }}
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-   # Test Chocolatey
-    - name: Choco help
-      uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: pack src/nuspec/chocolatey/tirchocotest.nuspec
+    #- name: Create release
+    #  uses: ncipollo/release-action@v1
+    #  with:
+    #    artifacts: "output/*.zip"
+    #    bodyFile: "RELEASENOTE.md"
+    #    tag: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+    #    token: ${{ secrets.GITHUB_TOKEN }}

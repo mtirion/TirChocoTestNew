@@ -1,24 +1,28 @@
-Version Notes (Current Version: v0.5.0)
+Version Notes (Current Version: v0.6.0)
 =======================================
 
-v0.5.0
+0.6.0
+-----------
+1. Published new zip-file as artifact
+
+0.5.0
 -----------
 1. Implemented new build scripts
 2. Added Chocolatey packaging
 
-v0.4.0
+0.4.0
 -----------
 1. Creating GitHub Releases in pipeline
 2. Added GitVersion
 
-v0.3.0
+0.3.0
 -----------
 1. Test GitHub Actions
 
-v0.2.0
+0.2.0
 -----------
 1. Test GitHub Actions
 
-v0.1.0
+0.1.0
 -----------
 1. Test GitHub Actions
