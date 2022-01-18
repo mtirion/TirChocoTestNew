@@ -37,12 +37,25 @@ jobs:
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
+<<<<<<< HEAD
+=======
+    # Bump the version as tag
+    #- name: Bump version and push tag
+    #  uses: anothrNick/github-tag-action@1.17.2
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    # We want to tag in our repo the same version we publish to NuGet
+    #    CUSTOM_TAG: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+    #    RELEASE_BRANCHES: main
+
+>>>>>>> 8ccc4545884e2ddb40aeca3b228aa55ff4f450ad
     # Create the executable
     # 1. Remove output folder first
     # 2. Build win files and copy in the LICENSE
     # 3. Build linux files and copy in the LICENSE
     - name: Create executables (win & linux)
       run: |
+<<<<<<< HEAD
         rm -fr output
 
         dotnet publish src/TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output/win
@@ -66,13 +79,24 @@ jobs:
         type: 'zip'
         directory: 'output/linux'
         filename: '../tools-linux-x64.zip'
+=======
+        dotnet publish TirChocoTestApp -c Release -r win-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained false -o output
+        mv output/TirChocoTestApp.exe output/TirChocoTestApp-win-x64.exe
+        dotnet publish TirChocoTestApp -c Release -r linux-x64 /p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} /p:PublishSingleFile=true /p:CopyOutputSymbolsToPublishDirectory=false /p:GenerateDocumentationFile=false --self-contained true -o output
+        mv output/TirChocoTestApp output/TirChocoTestApp-linux-x64
+>>>>>>> 8ccc4545884e2ddb40aeca3b228aa55ff4f450ad
 
     # Create GitHub release with created zip-files and CHANGELOG
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
+<<<<<<< HEAD
         artifacts: "output/*.zip"
         bodyFile: "RELEASENOTE.md"
+=======
+        artifacts: "output/**"
+        bodyFile: "CHANGELOG.md"
+>>>>>>> 8ccc4545884e2ddb40aeca3b228aa55ff4f450ad
         tag: ${{ steps.gitversion.outputs.MajorMinorPatch }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
