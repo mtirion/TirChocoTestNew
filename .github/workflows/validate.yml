@@ -19,8 +19,8 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore dependencies
-      run: dotnet restore TirChocoTestApp
+      run: dotnet restore src/TirChocoTestApp
     - name: Build
-      run: dotnet build TirChocoTestApp --no-restore
+      run: dotnet build src/TirChocoTestApp --no-restore
     - name: Test
-      run: dotnet test TirChocoTestApp --no-build --verbosity normal
+      run: dotnet test src/TirChocoTestApp --no-build --verbosity normal
