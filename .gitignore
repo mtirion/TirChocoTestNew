@@ -5,6 +5,10 @@
 
 # User-specific files
 [Oo]utput/
+[Tt][Ee][Mm][Pp]/
+package_version_temp.txt
+[Tt]arget/
+[Aa]rtifacts/
 
 *.rsuser
 *.suo
