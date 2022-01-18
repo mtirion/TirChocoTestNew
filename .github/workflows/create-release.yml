@@ -41,11 +41,8 @@ jobs:
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
-    # Create the executable
-    # 1. Remove output folder first
-    # 2. Build win files and copy in the LICENSE
-    # 3. Build linux files and copy in the LICENSE
-    - name: Create executables (win & linux)
+    # Call the deploy script
+    - name: Deploy
       shell: pwsh
       run: .\tools\deploy.ps1
 
