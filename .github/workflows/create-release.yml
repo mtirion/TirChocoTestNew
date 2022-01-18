@@ -2,14 +2,11 @@ name: CD pipeline
 
 # only trigger deployment when PR om main was closed and merged
 on:
-  pull_request:
+  push:
     branches: [ main ]
-    types: [ closed ]
 
 jobs:
   build:
-    # important! this filters only merged PR's, not close without merge
-    if: github.event.pull_request.merged == true
     runs-on: windows-latest
     steps:
 
