@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 
 . "$PSScriptRoot\config.ps1"
 . "$PSScriptRoot\deploy-tasks.ps1"
-. "$homeDir\common.ps1"
+. "$PSScriptRoot\common.ps1"
 
 # Validate if tools are installed
 $gitCommand = "git"
@@ -41,16 +41,23 @@ try {
         }
         "release" {
             if ($main) {
+                Write-Host "IsReleaseNoteVersionChanged $gitCommand $tirchocotest.releaseNotePath"
+                $ischanged = (IsReleaseNoteVersionChanged $gitCommand $tirchocotest.releaseNotePath)
+                Write-Host "Result: $ischanged"
                 if (IsReleaseNoteVersionChanged $gitCommand $tirchocotest.releaseNotePath) 
                 {
+                    Write-Host "PackAssetZip."
+                    $tirchocotest | ForEach-Object { $_ }
                     PackAssetZip $tirchocotest.releaseFolder $tirchocotest.assetZipPath
-                    
+                    Write-Host "Packed"
+
                     # TODO: later publish to nuget as well
-                    #PublishToNuget $nugetCommand $nuget."nuget.org" $tirchocotest.artifactsFolder $env:NUGETAPIKEY
+                    PublishToNuget $nugetCommand $nuget."nuget.org" $tirchocotest.artifactsFolder $env:NUGETAPIKEY
                     
                     # TODO: revisit for publish to release
                     #PublishToGithub $tirchocotest.assetZipPath $tirchocotest.releaseNotePath $tirchocotest.sshRepoUrl $env:TOKEN
                     
+                    Write-Host "PublishToChoco"
                     PublishToChocolatey $chocoCommand $tirchocotest.releaseNotePath $tirchocotest.assetZipPath $choco.chocoScript $choco.nuspec $choco.homeDir $env:CHOCO_TOKEN
                 } else {
                     Write-Host "`$releaseNotePath $($tirchocotest.releaseNotePath) hasn't been changed. Ignore to publish package." -ForegroundColor Yellow
