@@ -4,7 +4,7 @@ $tirchocotest = @{
     targetFolder = "$homeDir\target"
     artifactsFolder = "$homeDir\artifacts"
     releaseNotePath = "$homeDir\RELEASENOTE.md"
-    releaseFolder = "$homeDir\target\Release\tirchocotest"
+    releaseFolder = "$homeDir\target\Release\TirChocoTestApp"
     assetZipPath = "$homeDir\artifacts\tools-win-x64.zip"
 }
 
