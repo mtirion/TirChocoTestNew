@@ -43,14 +43,6 @@ jobs:
       shell: pwsh
       run: .\tools\deploy.ps1
 
-    # Create Changelog
-    - name: Conventional Changelog Action
-      uses: TriPSs/conventional-changelog-action@v3
-      with:
-        tag-prefix: 'v'
-        output-file: CHANGELOG.md
-        github-token: ${{ secrets.github_token }}
-
     # Create GitHub release with created zip-files and CHANGELOG
     #- name: Create release
     #  uses: ncipollo/release-action@v1
